@@ -43,9 +43,6 @@ def main():
         print("Sensor connected and recognized.")
         
     sensor.setup_sensor()
-    compute_frequency = True
-    t_start = ticks_us()  # Starting time of the acquisition
-    samples_n = 0  # Number of samples that have been collected
     
     #IMU
     i2c2 = I2C(0)
@@ -76,23 +73,44 @@ def main():
             acceleration = imu.accel
             print("")
             print("- IMU")
-
-            if abs(acceleration.y) > 0.8:
+            if abs(acceleration.y) > 0.5:
                 if (acceleration.y > 0):
                     print("Y axis points upwards")
                 else:               
                     print("Y axis points downwards")
                     if tackling < 12:
-                        tackling += 1
-                    while(abs(acceleration.y > 0.8) & abs(acceleration.y > 0) != True):
-                        print("spilleren er blevet tacklet og er stadig nede.")
-                        sleep(0.1)
+                        sleep(1.5)
+                        if abs(acceleration.y) > 0.5:
+                            if abs(acceleration.y > 0):
+                                print("Y axis points upwards, tackle not counted")
+                            else:
+                                tackling += 1
+                                while acceleration.y < 0:
+                                    print("spilleren er blevet tacklet og er stadig nede.")
+                                    sleep(0.1)
+                        else:
+                            tackling += 1
+                            while acceleration.y < 0.5 & acceleration.y < 0:
+                                print("spilleren er blevet tacklet og er stadig nede.")
+                                sleep(0.1)
+                    else:
+                        print("max tacklinger")
             else:
                 if tackling < 12:
+                    sleep(1.5)
+                    if acceleration.y > 0.5:
+                        if acceleration.y > 0:
+                            print("Y axis points upwards, tackle not counted")
+                        else:
+                            tackling += 1
+                            while acceleration.y < 0:
+                                print("spilleren er blevet tacklet og er stadig nede.")
+                                sleep(0.1)
+                    else:
                         tackling += 1
-                while(abs(acceleration.y > 0.8) & abs(acceleration.y > 0) != True):
-                    print("spilleren er blevet tacklet og er stadig nede.")
-                    sleep(0.1)
+                        while acceleration.y < 0:
+                            print("spilleren er blevet tacklet og er stadig nede.")
+                            sleep(0.1)
             print('')
             print("- TACKLINGER")
             print("%d" % tackling)
@@ -102,6 +120,8 @@ def main():
                     movePixel(12)
                 else:
                     movePixel(tackling)
+            else:
+                print("tacklinger = 0")
             
             #BATTERI
             print('- BATTERI')
@@ -118,14 +138,6 @@ def main():
                 red_reading = sensor.pop_red_from_storage()
                 ir_reading = sensor.pop_ir_from_storage()
                 print(red_reading, ",", ir_reading)
-            if compute_frequency:
-                if ticks_diff(ticks_us(), t_start) >= 999999:
-                    f_HZ = samples_n
-                    samples_n = 0
-                    print("acquisition frequency = ", f_HZ)
-                    t_start = ticks_us()
-                else:
-                    samples_n = samples_n + 1
 
             #GPS 
             if gps.receive_nmea_data():
@@ -148,38 +160,6 @@ def main():
                 mqtt.web_print("error: no GPS data received.")
                 sleep(4)
                 
-            #IMU + NEOPIXEL 2
-            acceleration = imu.accel
-            print("")
-            print("- IMU")
-
-            if abs(acceleration.y) > 0.8:
-                if (acceleration.y > 0):
-                    print("Y axis points upwards")
-                else:               
-                    print("Y axis points downwards")
-                    if tackling < 12:
-                        tackling += 1
-                    while(abs(acceleration.y > 0.8) & abs(acceleration.y > 0) != True):
-                        print("spilleren er blevet tacklet og er stadig nede.")
-                        sleep(0.1)
-            else:
-                if tackling < 12:
-                        tackling += 1
-                while(abs(acceleration.y > 0.8) & abs(acceleration.y > 0) != True):
-                    print("spilleren er blevet tacklet og er stadig nede.")
-                    sleep(0.1) 
-            #NEOPIXEL
-            print('')
-            print("- TACKLINGER")
-            print("%d" % tackling)
-            print('')
-            if tackling != 0:
-                if tackling >= 12:
-                    movePixel(12)
-                else:
-                    movePixel(tackling)
-        
             if len(mqtt.besked) != 0: 
                 mqtt.besked = ""
             
