@@ -48,8 +48,8 @@ def main():
     samples_n = 0  # Number of samples that have been collected
     
     #IMU
-    i2c = I2C(0)
-    imu = MPU6050(i2c)
+    i2c2 = I2C(0)
+    imu = MPU6050(i2c2)
     tackling = 0
     
     #GPS
