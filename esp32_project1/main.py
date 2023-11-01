@@ -92,9 +92,8 @@ def main():
                         tackling += 1
                 while(abs(acceleration.y > 0.8) & abs(acceleration.y > 0) != True):
                     print("spilleren er blevet tacklet og er stadig nede.")
-                    sleep(0.1) 
+                    sleep(0.1)
             print('')
-            sleep(0.5)
             print("- TACKLINGER")
             print("%d" % tackling)
             print('')
@@ -172,7 +171,6 @@ def main():
                     sleep(0.1) 
             #NEOPIXEL
             print('')
-            sleep(0.5)
             print("- TACKLINGER")
             print("%d" % tackling)
             print('')
