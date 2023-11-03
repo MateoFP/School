@@ -111,7 +111,6 @@ def main():
                 batteryVal = 0
             elif batteryVal > 100:
                 batteryVal = 100
-                
             if batteryVal < 10:
                 np[0] = (10,0,0)
                 np.write()
@@ -159,9 +158,6 @@ def main():
                     print("error: no GPS data received.")
                     mqtt.web_print("error: no GPS data received.")
                 
-            if len(mqtt.besked) != 0: 
-                mqtt.besked = ""
-                
             #IMU + NEOPIXEL
             acceleration = imu.accel
             print("")
@@ -193,6 +189,9 @@ def main():
             else:
                 print("tacklinger = 0")
             
+            if len(mqtt.besked) != 0:
+                mqtt.besked = ""
+                
             mqtt.sync_with_adafruitIO()
         
         except KeyboardInterrupt: 
@@ -202,4 +201,3 @@ def main():
             
 if __name__ == '__main__':
     main()
-            
