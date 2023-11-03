@@ -126,7 +126,7 @@ def main():
             print('battery percentage =', batteryVal)
             batteryMsg1 = '%'
             batteryMsg = str(read_battery_voltage_avg64()) + str(batteryMsg1)
-            if seconds1 = 30:    
+            if seconds1 == 30:    
                 mqtt.web_print(batteryMsg, 'MateoFP/feeds/batteryFeed')
                 print('')
             
