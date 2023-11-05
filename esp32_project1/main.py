@@ -93,7 +93,7 @@ def main():
             if (acceleration.y > 0.6) & (acceleration.y > 0):
                 print("Y axis points upwards")
             else:
-                if tackling <= 13:
+                if tackling <= 12:
                     sleep(1)
                     if (acceleration.y > 0.6) & (acceleration.y > 0):
                             print("Y axis points upwards, tackle not counted")
@@ -109,7 +109,7 @@ def main():
             print(tackling - 1)
             if max1 == True:
                 if tackling != 1:
-                    if tackling >= 13:
+                    if tackling >= 12:
                         movePixel(12, 0, 5, 5)
                     else:
                         movePixel(tackling, 0, 5, 5)
@@ -145,8 +145,8 @@ def main():
                         mqtt.web_print('error: GPS data is unavailable.')
                         mqttVar = 3
                 
-            if read_battery_voltage_avg64() <= 5:
-                return
+            #if read_battery_voltage_avg64() <= 5:
+                #return
     
             mqtt.sync_with_adafruitIO()
         
@@ -157,4 +157,3 @@ def main():
             
 if __name__ == '__main__':
     main()
-            
