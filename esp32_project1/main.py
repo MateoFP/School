@@ -64,6 +64,9 @@ def main():
             
             batteryVal = read_battery_voltage_avg64()
             
+            if batteryVal <= 5:
+                return
+            
             if batteryVal < 0:
                 batteryVal = 0
             elif batteryVal > 100:
@@ -143,9 +146,6 @@ def main():
                         print('error: GPS data is not available.')
                         mqtt.web_print('error: GPS data is unavailable.')
                         mqttVar = 3
-                
-            #if read_battery_voltage_avg64() <= 5:
-                #return
     
             mqtt.sync_with_adafruitIO()
         
