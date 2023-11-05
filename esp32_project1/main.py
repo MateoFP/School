@@ -62,6 +62,10 @@ def main():
             
             batteryVal = read_battery_voltage_avg64()
             
+            if int(batteryVal) < 3:
+                mqtt.c.disconnect()
+                mqtt.sys.exit()
+                
             if batteryVal < 0:
                 batteryVal = 0
             elif batteryVal > 100:
@@ -76,10 +80,6 @@ def main():
             else:
                 np[0] = (0,10,0)
                 np.write()
-                
-            if int(batteryVal) < 3:
-                mqtt.c.disconnect()
-                mqtt.sys.exit()
                 
             print('battery percentage =', batteryVal)
             batteryMsg1 = '%'
