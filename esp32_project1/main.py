@@ -64,8 +64,9 @@ def main():
             
             batteryVal = read_battery_voltage_avg64()
             
-            if batteryVal <= 5:
-                return
+            if batteryVal < 5:
+                mqtt.c.disconnect()
+                mqtt.sys.exit()
             
             if batteryVal < 0:
                 batteryVal = 0
