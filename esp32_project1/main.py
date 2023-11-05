@@ -98,7 +98,7 @@ def main():
                 if tackling <= 12:
                     sleep(1)
                     if (acceleration.y > 0.6) & (acceleration.y > 0):
-                            print("Y axis points upwards, tackle not counted")
+                        print("Y axis points upwards, tackle not counted")
                     else:
                         tackling += 1
                         while (acceleration.y < 0.8):
