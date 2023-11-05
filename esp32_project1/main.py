@@ -43,9 +43,7 @@ def main():
     for i in range(12):
         np[i] = (0,0,0)
         np.write()
-        
-    sleep(1)
-    
+
     while True:
         try:
             loopCounter = loopCounter + 1
@@ -57,16 +55,12 @@ def main():
                 loopCounter = 0
             if loopCounter == 29:
                 mqttVar = 0
-                
             sleep(1)
+
             print('')
             print('- BATTERI')
             
             batteryVal = read_battery_voltage_avg64()
-            
-            if batteryVal < 5:
-                mqtt.c.disconnect()
-                mqtt.sys.exit()
             
             if batteryVal < 0:
                 batteryVal = 0
@@ -82,6 +76,10 @@ def main():
             else:
                 np[0] = (0,10,0)
                 np.write()
+                
+            if int(batteryVal) < 3:
+                mqtt.c.disconnect()
+                mqtt.sys.exit()
                 
             print('battery percentage =', batteryVal)
             batteryMsg1 = '%'
@@ -144,9 +142,9 @@ def main():
                         mqtt.web_print("error: GPS data is invalid.")
                         mqttVar = 3
                 else:
-                        print('error: GPS data is not available.')
-                        mqtt.web_print('error: GPS data is unavailable.')
-                        mqttVar = 3
+                    print('error: GPS data is not available.')
+                    mqtt.web_print('error: GPS data is unavailable.')
+                    mqttVar = 3
     
             mqtt.sync_with_adafruitIO()
         
