@@ -119,7 +119,6 @@ def main():
                     max1 = True
                     movePixel(tackling, 0, 0, 5)
                     tackling = 1
-                    movePixel(tackling, 0, 5, 5)
                 else:
                     movePixel(tackling, 0, 0, 5)
             print('')
