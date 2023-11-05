@@ -55,7 +55,6 @@ def main():
             if loopCounter == 59:
                 mqttVar = 1
                 loopCounter = 0
-                
             if loopCounter == 29:
                 mqttVar = 0
                 
